@@ -5,6 +5,8 @@ A small self contained web application written in Go and Typescript.
 
 ## Getting Started
 
+Requires 
+ - [gcc](https://jmeubank.github.io/tdm-gcc/)
 ```console
 go install github.com/swaggo/swag/cmd/swag@latest
 ```

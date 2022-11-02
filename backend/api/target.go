@@ -1,7 +1,6 @@
 package api
 
 import (
-	"context"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"pingo/db"
@@ -19,10 +18,10 @@ func RegisterRoutes(parent *echo.Group, db *db.PingoDB) {
 
 	g := parent.Group("/target")
 
-	g.POST(apiEndpoint, h.create)
-	g.GET(apiEndpoint, h.all)
-	//g.GET(apiEndpoint, h.all) // TODO: Get by ID
-	g.DELETE(apiEndpoint, h.delete)
+	g.POST("", h.create)
+	g.GET("", h.all)
+	//g.GET("/:id", h.get) // TODO: Get by ID
+	g.DELETE("", h.delete)
 
 }
 
@@ -33,55 +32,38 @@ type handler struct {
 }
 
 type targetDB interface {
-	CreateTarget(ctx context.Context, t *models.Target) (models.Target, error)
-	ReadTarget(ctx context.Context, ID int) (string, error)
-	UpdateTarget(ctx context.Context, ID int, t models.Target) (models.Target, error)
-	DeleteTarget(ctx context.Context, ID int) (string, error)
+	//CreateTarget(ctx context.Context) (models.Target, error)
+	//ReadTarget(ctx context.Context) (string, error)
+	//UpdateTarget(ctx context.Context) (models.Target, error)
+	// DeleteTarget(ctx context.Context) (string, error)
 }
 
 // Handlers
 
+var targets []models.Target
+
 func (h *handler) create(c echo.Context) error {
 
-	t := new(models.Target)
-
-	if err := c.Bind(t); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	t := &models.Target{
+		Id:        0,
+		Type:      "",
+		Source:    "",
+		Frequency: 0,
+		Unit:      "",
 	}
 
-	// TODO: Enable validation
-	//if err := c.Validate(u); err != nil {
-	//	return err
-	//}
+	targets = append(targets, *t)
 
-	result, err := h.db.CreateTarget(c.Request().Context(), t)
-	if err != nil {
-		return err // TODO: HTTP Error?
-	}
-
-	return c.JSON(http.StatusCreated, result)
+	return c.JSON(http.StatusCreated, t)
 }
 
 func (h *handler) all(c echo.Context) error {
-
-	var id int
-
-	result, err := h.db.ReadTarget(c.Request().Context(), id)
-	if err != nil {
-		return err
-	}
-
-	return c.String(http.StatusNotImplemented, result)
+	return c.JSON(http.StatusOK, targets)
 }
 
 func (h *handler) delete(c echo.Context) error {
 
-	var id int
+	targets = nil
 
-	result, err := h.db.DeleteTarget(c.Request().Context(), id)
-	if err != nil {
-		return err
-	}
-
-	return c.String(http.StatusNotImplemented, result)
+	return c.JSON(http.StatusOK, targets)
 }

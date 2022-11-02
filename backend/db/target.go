@@ -5,15 +5,21 @@ import (
 	"pingo/models"
 )
 
-func (db *PingoDB) CreateTarget(ctx context.Context, t *models.Target) (models.Target, error) {
+func (pdb *PingoDB) CreateTarget(ctx context.Context, t *models.Target) (models.Target, error) {
+
+	err := pdb.db.Insert(t)
+	if err != nil {
+		return models.Target{}, err
+	}
+
 	return *t, nil
 }
-func (db *PingoDB) ReadTarget(ctx context.Context, ID int) (string, error) {
+func (pdb *PingoDB) ReadTarget(ctx context.Context, ID int) (string, error) {
 	return "adam", nil
 }
-func (db *PingoDB) UpdateTarget(ctx context.Context, ID int, t models.Target) (models.Target, error) {
+func (pdb *PingoDB) UpdateTarget(ctx context.Context, ID int, t models.Target) (models.Target, error) {
 	return t, nil
 }
-func (db *PingoDB) DeleteTarget(ctx context.Context, ID int) (string, error) {
+func (pdb *PingoDB) DeleteTarget(ctx context.Context, ID int) (string, error) {
 	return "adam", nil
 }

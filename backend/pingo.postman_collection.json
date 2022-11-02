@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "7e41a588-2bbe-4019-9918-aee9528f18db",
+		"name": "Pingo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8259013"
+	},
+	"item": [
+		{
+			"name": "Get Target",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1323/api/collections",
+					"host": [
+						"localhost"
+					],
+					"port": "1323",
+					"path": [
+						"api",
+						"collections"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
