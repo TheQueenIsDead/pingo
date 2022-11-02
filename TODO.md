@@ -15,6 +15,7 @@
 ## Investigation
 
  - [ ] Look into [PiniaJS](https://stackblitz.com/github/piniajs/example-vue-3-vite?file=src%2Fstores%2Fcart.js) 
+   - Remove `stores/` if so
  - [ ] Look into [DB mocking](https://github.com/labstack/echo/issues/2075)
  - [ ] Look into [go-sqlite3](https://github.com/mattn/go-sqlite3)
  - [ ] [Test controller vs test endpoint](https://github.com/labstack/echo/discussions/2283)

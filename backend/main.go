@@ -17,6 +17,8 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
+
 	//// Database
 	//db := new(db.PingoDB)
 	//db.Init()
