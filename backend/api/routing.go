@@ -15,6 +15,6 @@ func RegisterRoutes(a *Application, parent *echo.Group) {
 	t := parent.Group("/target")
 	t.POST("", a.createTarget)
 	t.GET("", a.getTarget)
-	// g.GET("/:id", a.get) // TODO: Get by ID
+	t.GET("/:id", a.getTarget)
 	t.DELETE("", a.deleteTarget)
 }

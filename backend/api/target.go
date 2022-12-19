@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 	"net/http"
 	"pingo/models"
 )
@@ -21,8 +22,24 @@ func (a *Application) createTarget(c echo.Context) error {
 }
 
 func (a *Application) getTarget(c echo.Context) error {
-	// TODO: Get from DB
-	return c.JSON(http.StatusNotImplemented, nil)
+
+	targetId := c.Param("id")
+
+	var err error
+
+	var t []models.Target
+	if targetId == "" {
+		err = a.db.Find(&t).Error
+	} else {
+		err = a.db.First(&t, targetId).Error
+	}
+
+	if err != nil {
+		log.Error(err)
+		return c.JSON(http.StatusNotFound, err)
+	}
+
+	return c.JSON(http.StatusOK, t)
 }
 
 // TODO: Implement
