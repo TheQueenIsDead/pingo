@@ -9,14 +9,20 @@ import (
 
 func (a *Application) createTarget(c echo.Context) error {
 
-	t := &models.Target{
-		Source:    "",
-		Frequency: 0,
-		Unit:      "",
+	var t models.Target
+
+	err := c.Bind(&t)
+	if err != nil {
+		log.Error(err)
+		return echo.ErrBadRequest
 	}
 
-	// TODO: Replace with DB
-	//targets = append(targets, *t)
+	err = a.db.Create(&t).Error
+	if err != nil {
+		log.Error(err)
+		return c.JSON(http.StatusBadRequest, err)
+		//return echo.ErrBadRequest
+	}
 
 	return c.JSON(http.StatusCreated, t)
 }
@@ -26,7 +32,6 @@ func (a *Application) getTarget(c echo.Context) error {
 	targetId := c.Param("id")
 
 	var err error
-
 	var t []models.Target
 	if targetId == "" {
 		err = a.db.Find(&t).Error
