@@ -1,16 +1,16 @@
 {
 	"info": {
-		"_postman_id": "23a0bf5d-599c-4b20-b39a-f0f2f7c80ab3",
+		"_postman_id": "203abbf1-6a32-42eb-b243-caed77296ac5",
 		"name": "Pingo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20685712"
+		"_exporter_id": "8259013"
 	},
 	"item": [
 		{
 			"name": "Bootstrap",
 			"item": [
 				{
-					"name": "localhost:1323/api/bootstrap",
+					"name": "Create",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -29,7 +29,7 @@
 					"response": []
 				},
 				{
-					"name": "localhost:1323/api/bootstrap Copy",
+					"name": "Teardown",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -58,14 +58,101 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:1323/api/collections",
+							"raw": "localhost:1323/api/target",
 							"host": [
 								"localhost"
 							],
 							"port": "1323",
 							"path": [
 								"api",
-								"collections"
+								"target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Target by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/target/1",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"target",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Target",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"source\":\"https://github.com\",\"frequency\":5,\"unit\":\"SECONDS\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1323/api/target",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Target",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/target",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Target by Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/target/1",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"target",
+								"1"
 							]
 						}
 					},
