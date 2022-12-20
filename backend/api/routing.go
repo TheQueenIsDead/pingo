@@ -21,7 +21,7 @@ func RegisterRoutes(a *Application, parent *echo.Group) {
 
 	// Poll
 	p := parent.Group("/poll")
-	p.GET("/", a.getPoll)
+	p.GET("", a.getPoll)
 	p.GET("/:id", a.getPoll)
 	p.POST("", a.createPoll)
 }

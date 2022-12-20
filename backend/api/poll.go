@@ -19,49 +19,49 @@ func (a *Application) createPoll(c echo.Context) error {
 		return echo.ErrBadRequest
 	}
 
-	// Inflate the target ids into structs
-	for id := range p.TargetIds {
-		p.Targets = append(p.Targets, models.Target{
-			Model: gorm.Model{
-				ID: uint(id),
-			},
+	var tl []models.Target
+	for _, id := range p.TargetIds {
+
+		tl = append(tl, models.Target{
+			Model: gorm.Model{ID: uint(id)},
 		})
 	}
+	p.Targets = tl
 
 	// Create poll
 	if err := a.db.Create(&p).Error; err != nil {
 		return err
 	}
 
-	//a.db.Begin()
-	//err = a.db.Create(&p).Error
-	//if err != nil {
-	//	log.Error(err)
-	//	return c.JSON(http.StatusBadRequest, err)
-	//}
-
 	return c.JSON(http.StatusCreated, p)
-
 }
 
 // TODO: Implement
 func (a *Application) getPoll(c echo.Context) error {
 
-	id := c.Param("id")
+	//id := c.Param("id")
 
 	var err error
-	var p []models.Poll
-	if id == "" {
-		err = a.db.Find(&p).Error
-	} else {
-		err = a.db.First(&p, id).Error
-	}
+	var pl []models.Poll
+
+	//err = a.db.Find(&pl).Association("Targets").Error
+	err = a.db.Preload("Targets").Find(&pl).Error
 
 	if err != nil {
 		log.Error(err)
 		return c.JSON(http.StatusNotFound, err)
 	}
 
-	return c.JSON(http.StatusOK, p)
+	// Build Ids into JSON response
+	for pidx, p := range pl {
+		var tids []int
+		for _, t := range p.Targets {
+			tids = append(tids, int(t.ID))
+		}
+		p.TargetIds = tids
+		pl[pidx] = p
+	}
+
+	return c.JSON(http.StatusOK, pl)
 
 }

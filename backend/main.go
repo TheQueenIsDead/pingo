@@ -20,6 +20,12 @@ func main() {
 	db, err := gorm.Open(sqlite.Open("pingo.db"), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
+	// Specifically enable FK for sqlite3
+	err = db.Exec("PRAGMA foreign_keys = ON", nil).Error
+	if err != nil {
+		e.Logger.Fatal(err)
+	}
+
 	err = db.AutoMigrate(
 		&models.Target{},
 		&models.Poll{})
