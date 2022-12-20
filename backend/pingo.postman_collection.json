@@ -159,6 +159,117 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Poll",
+			"item": [
+				{
+					"name": "Get Poll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/poll",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"poll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Target by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/target/1",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"target",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Poll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"target_ids\": [1],\r\n    \"duration\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1323/api/poll",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"poll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Poll",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/poll",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"poll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Poll by Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:1323/api/poll/1",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"poll",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
