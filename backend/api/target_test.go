@@ -3,8 +3,10 @@ package api
 import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
+	"math/rand"
 	"net/http"
 	"testing"
+	"time"
 )
 
 var (
@@ -63,10 +65,55 @@ func TestGetTargetById(t *testing.T) {
 	// Expect the following database activity
 	mock.ExpectQuery("SELECT (.+) FROM `targets` WHERE `targets`.`id` = (.+) `targets`.`deleted_at` IS NULL").
 		WithArgs(1).
-		WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "source", "frequency", "unit"}))
+		WillReturnRows(
+			sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "source", "frequency", "unit"}).
+				AddRow("1", time.Now(), time.Now(), time.Now(), "https://example.com", rand.Int(), "SECONDS"))
 
 	// Assertions
 	if assert.NoError(t, app.getTarget(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		//TODO: Figure out how to assert response when the time differs
+		//assert.Equal(t, targetJSON, rec.Body.String())
+	}
+}
+
+func TestDeleteTarget(t *testing.T) {
+
+	// Setup
+	c, rec := SetupHttpRecorderDELETE("/")
+	app, mock := SetupMockApplication()
+
+	// Expect the following database activity
+	mock.ExpectBegin()
+	mock.ExpectExec("UPDATE `targets`").
+		WillReturnResult(sqlmock.NewResult(0, 1))
+	mock.ExpectCommit()
+
+	// Assertions
+	if assert.NoError(t, app.deleteTarget(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		//TODO: Figure out how to assert response when the time differs
+		//assert.Equal(t, targetJSON, rec.Body.String())
+	}
+}
+
+func TestDeleteTargetById(t *testing.T) {
+	// Setup
+	c, rec := SetupHttpRecorderDELETE("/")
+	c.SetPath("/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("1")
+	app, mock := SetupMockApplication()
+
+	// Expect the following database activity
+	mock.ExpectBegin()
+	mock.ExpectExec("UPDATE `targets`").
+		WithArgs(sqlmock.AnyArg(), "1").
+		WillReturnResult(sqlmock.NewResult(0, 1))
+	mock.ExpectCommit()
+
+	// Assertions
+	if assert.NoError(t, app.deleteTarget(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		//TODO: Figure out how to assert response when the time differs
 		//assert.Equal(t, targetJSON, rec.Body.String())

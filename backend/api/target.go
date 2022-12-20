@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"gorm.io/gorm"
 	"net/http"
 	"pingo/models"
 	"strconv"
@@ -57,8 +58,20 @@ func (a *Application) getTarget(c echo.Context) error {
 
 func (a *Application) deleteTarget(c echo.Context) error {
 
-	// TODO: Delete from DB
-	//targets = nil
+	targetId := c.Param("id")
 
-	return c.JSON(http.StatusNotImplemented, nil)
+	var err error
+	var t models.Target
+	if targetId == "" {
+		err = a.db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&t).Error
+	} else {
+		err = a.db.Delete(&t, targetId).Error
+	}
+
+	if err != nil {
+		log.Error(err)
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	return c.JSON(http.StatusOK, HttpEmptyJSONResponse)
 }

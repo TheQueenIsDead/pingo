@@ -45,6 +45,13 @@ func SetupHttpRecorderPOST(httpPath, httpBody string) (echo.Context, *httptest.R
 		httpPath,
 	)
 }
+func SetupHttpRecorderDELETE(httpPath string) (echo.Context, *httptest.ResponseRecorder) {
+	return setupHttpRecorder(
+		http.MethodDelete,
+		"",
+		httpPath,
+	)
+}
 
 func SetupMockApplication() (*Application, sqlmock.Sqlmock) {
 
