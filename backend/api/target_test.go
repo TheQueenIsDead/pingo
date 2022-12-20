@@ -2,40 +2,10 @@ package api
 
 import (
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"net/http"
-	"net/http/httptest"
-	"strings"
 	"testing"
 )
-
-func setupMockApplication() (*Application, sqlmock.Sqlmock) {
-
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	mock.ExpectQuery("select sqlite_version()").
-		WillReturnRows(
-			sqlmock.NewRows([]string{"sqlite_version()"}).
-				AddRow(""))
-
-	gdb, err := gorm.Open(&sqlite.Dialector{
-		DriverName: sqlite.DriverName,
-		DSN:        "",
-		Conn:       db,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return &Application{db: gdb}, mock
-}
 
 var (
 	createTargetJSON = `{"source":"https://github.com","frequency":5,"unit":"SECONDS"}`
@@ -43,14 +13,12 @@ var (
 )
 
 func TestCreateTarget(t *testing.T) {
-	// Setup
-	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(createTargetJSON))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
-	app, mock := setupMockApplication()
 
+	// Setup
+	c, rec := SetupHttpRecorder(http.MethodPost, createTargetJSON)
+	app, mock := SetupMockApplication()
+
+	// Expect the following database activity
 	mock.ExpectBegin()
 	mock.ExpectExec("INSERT INTO `targets`").
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg()). // 6 args
