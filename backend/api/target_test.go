@@ -15,7 +15,7 @@ var (
 func TestCreateTarget(t *testing.T) {
 
 	// Setup
-	c, rec := SetupHttpRecorder(http.MethodPost, createTargetJSON)
+	c, rec := SetupHttpRecorderPOST("", createTargetJSON)
 	app, mock := SetupMockApplication()
 
 	// Expect the following database activity

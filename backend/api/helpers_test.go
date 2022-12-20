@@ -8,20 +8,42 @@ import (
 	"github.com/labstack/gommon/log"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"net/http"
 	"net/http/httptest"
 	"strings"
 )
 
-func SetupHttpRecorder(httpMethod, httpBody string) (echo.Context, *httptest.ResponseRecorder) {
+func setupHttpRecorder(httpMethod, httpBody, httpPath string) (echo.Context, *httptest.ResponseRecorder) {
+
+	// Set default path ensuring a trailing slash
+	reqHttpPath := httpPath
+	if reqHttpPath == "" {
+		reqHttpPath = "/"
+	}
+
 	// Setup
 	e := echo.New()
-	req := httptest.NewRequest(httpMethod, "/", strings.NewReader(httpBody))
+	req := httptest.NewRequest(httpMethod, reqHttpPath, strings.NewReader(httpBody))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
 	return c, rec
 
+}
+func SetupHttpRecorderGET(httpPath string) (echo.Context, *httptest.ResponseRecorder) {
+	return setupHttpRecorder(
+		http.MethodGet,
+		"",
+		httpPath,
+	)
+}
+func SetupHttpRecorderPOST(httpPath, httpBody string) (echo.Context, *httptest.ResponseRecorder) {
+	return setupHttpRecorder(
+		http.MethodPost,
+		httpBody,
+		httpPath,
+	)
 }
 
 func SetupMockApplication() (*Application, sqlmock.Sqlmock) {
