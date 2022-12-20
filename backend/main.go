@@ -17,8 +17,12 @@ func main() {
 	e.Logger.SetLevel(log.DEBUG)
 
 	// DB
-	db, err := gorm.Open(sqlite.Open("pingo.db"), &gorm.Config{})
-	err = db.AutoMigrate(&models.Target{})
+	db, err := gorm.Open(sqlite.Open("pingo.db"), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
+	err = db.AutoMigrate(
+		&models.Target{},
+		&models.Poll{})
 	if err != nil {
 		e.Logger.Fatal(err)
 	}

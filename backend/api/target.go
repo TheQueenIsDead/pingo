@@ -23,7 +23,6 @@ func (a *Application) createTarget(c echo.Context) error {
 	if err != nil {
 		log.Error(err)
 		return c.JSON(http.StatusBadRequest, err)
-		//return echo.ErrBadRequest
 	}
 
 	return c.JSON(http.StatusCreated, t)
