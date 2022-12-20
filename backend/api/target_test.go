@@ -32,3 +32,43 @@ func TestCreateTarget(t *testing.T) {
 		//assert.Equal(t, targetJSON, rec.Body.String())
 	}
 }
+
+func TestGetTarget(t *testing.T) {
+
+	// Setup
+	c, rec := SetupHttpRecorderGET("")
+	app, mock := SetupMockApplication()
+
+	// Expect the following database activity
+	mock.ExpectQuery("SELECT (.+) FROM `targets` WHERE `targets`.`deleted_at` IS NULL").
+		WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "source", "frequency", "unit"}))
+
+	// Assertions
+	if assert.NoError(t, app.getTarget(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		//TODO: Figure out how to assert response when the time differs
+		//assert.Equal(t, targetJSON, rec.Body.String())
+	}
+}
+
+func TestGetTargetById(t *testing.T) {
+
+	// Setup
+	c, rec := SetupHttpRecorderGET("/")
+	c.SetPath("/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("1")
+	app, mock := SetupMockApplication()
+
+	// Expect the following database activity
+	mock.ExpectQuery("SELECT (.+) FROM `targets` WHERE `targets`.`id` = (.+) `targets`.`deleted_at` IS NULL").
+		WithArgs(1).
+		WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "source", "frequency", "unit"}))
+
+	// Assertions
+	if assert.NoError(t, app.getTarget(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		//TODO: Figure out how to assert response when the time differs
+		//assert.Equal(t, targetJSON, rec.Body.String())
+	}
+}

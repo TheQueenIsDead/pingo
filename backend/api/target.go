@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"net/http"
 	"pingo/models"
+	"strconv"
 )
 
 func (a *Application) createTarget(c echo.Context) error {
@@ -36,7 +37,8 @@ func (a *Application) getTarget(c echo.Context) error {
 	if targetId == "" {
 		err = a.db.Find(&t).Error
 	} else {
-		err = a.db.First(&t, targetId).Error
+		s, _ := strconv.Atoi(targetId)
+		err = a.db.First(&t, s).Error
 	}
 
 	if err != nil {
