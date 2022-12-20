@@ -3,6 +3,7 @@ module pingo
 go 1.19
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/labstack/echo/v4 v4.9.1
 	github.com/labstack/gommon v0.4.0
 	github.com/stretchr/testify v1.8.1
@@ -21,7 +22,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect
