@@ -44,7 +44,6 @@ func (a *Application) getPoll(c echo.Context) error {
 	var err error
 	var pl []models.Poll
 
-	//err = a.db.Find(&pl).Association("Targets").Error
 	err = a.db.Preload("Targets").Find(&pl).Error
 
 	if err != nil {
